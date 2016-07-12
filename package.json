@@ -1,0 +1,26 @@
+{
+  "name": "robot_car",
+  "version": "1.0.0",
+  "description": "",
+  "main": "blink_test_j5.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishmandoo/robot_car.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishmandoo/robot_car/issues"
+  },
+  "homepage": "https://github.com/ishmandoo/robot_car#readme",
+  "dependencies": {
+    "cylon": "^1.3.0",
+    "cylon-firmata": "^0.24.0",
+    "cylon-gpio": "^0.29.0",
+    "cylon-i2c": "^0.26.1",
+    "johnny-five": "^0.9.59"
+  }
+}

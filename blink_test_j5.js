@@ -1,7 +1,5 @@
-var five = require("johnny-five");
-var board = new five.Board({
-  port: "/dev/ttyUSB0"
-});
+var five = require("johnny-five"),
+    board = new five.Board();
 
 board.on("ready", function() {
 

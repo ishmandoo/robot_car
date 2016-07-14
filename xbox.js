@@ -29,6 +29,7 @@ xbox.on('righttrigger', function(position){
 });
 
 xbox.on('left:move', function(position){
+  socket.emit('steer', position.x);
   console.log('left:move', position);
 });
 

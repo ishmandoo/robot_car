@@ -108,6 +108,19 @@ board.on("ready", function() {
       }
     });
 
+    socket.on('steer', function(value){
+      if (value > 20000){
+
+        motor2.forward(255)
+      }
+      else if (value < -20000){
+
+        motor2.reverse(255)
+      }
+
+
+    });
+
     socket.on('reverse', function(speed){
       console.log('driving')
       if(speed > 100){

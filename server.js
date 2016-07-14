@@ -105,7 +105,7 @@ board.on("ready", function() {
     socket.on('reverse', function(speed){
       console.log('driving')
       motor1.reverse(speed);
-      motor3.forward(speed);
+      motor3.start(speed);
     });
 
     socket.on('stop', function(){

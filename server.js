@@ -34,6 +34,7 @@ board.on("ready", function() {
   });
 
   imu.on("change", function() {
+  	/*
     console.log("temperature");
     console.log("  celsius      : ", this.temperature.celsius);
     console.log("  fahrenheit   : ", this.temperature.fahrenheit);
@@ -61,6 +62,7 @@ board.on("ready", function() {
     console.log("  rate         : ", this.gyro.rate);
     console.log("  isCalibrated : ", this.gyro.isCalibrated);
     console.log("--------------------------------------");
+    */
     if(io){
   		if(io.sockets){
   			io.sockets.emit('imu_update', this.accelerometer.x);

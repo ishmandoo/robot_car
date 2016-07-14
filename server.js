@@ -79,13 +79,6 @@ board.on("ready", function() {
   var motor3 = new five.Motor(configs.M3);
   var motor4 = new five.Motor(configs.M4);
 
-  			motor1.start(100);
-  		motor3.start(-100);
-  		setTimeout( function () {
-				motor1.start(100);
-  			motor3.start(-100);
-  		}, 1000 );
-  
 
   io.on('connection', function(socket){
   	console.log('a user connected');
@@ -96,10 +89,10 @@ board.on("ready", function() {
   	socket.on('drive', function(){
   		console.log('driving')
 			motor1.start(100);
-  		motor3.start(-100);
+  		motor3.reverse(100);
   		setTimeout( function () {
-				motor1.start(100);
-  			motor3.start(-100);
+				motor1.stop();
+  			motor3.stop();
   		}, 1000 );
   	});
 

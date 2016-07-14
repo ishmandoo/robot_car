@@ -21,6 +21,8 @@
     "cylon-firmata": "^0.24.0",
     "cylon-gpio": "^0.29.0",
     "cylon-i2c": "^0.26.1",
-    "johnny-five": "^0.9.59"
+    "express": "^4.14.0",
+    "johnny-five": "^0.9.59",
+    "socket.io": "^1.4.8"
   }
 }

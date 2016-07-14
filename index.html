@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+  var socket = io();
+  
+  socket.on('gps_update', function(msg){
+    console.log('message: ' + msg);
+    $('#gps').html( JSON.stringify(msg))
+  });
+
+  socket.on('imu_update', function(msg){
+    console.log('message: ' + msg);
+    $('#imu').html(JSON.stringify(msg))
+  });
+</script>
+</head>
+
+<body>
+
+<div id="imu">
+</div>
+<div id="gps">
+</div>
+Hi There
+</body>
+
+</html>

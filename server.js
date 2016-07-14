@@ -88,8 +88,8 @@ board.on("ready", function() {
 
   	socket.on('drive', function(){
   		console.log('driving')
-			motor1.start(100);
-  		motor3.reverse(100);
+			motor1.start(255);
+  		motor3.reverse(255);
   		setTimeout( function () {
 				motor1.stop();
   			motor3.stop();

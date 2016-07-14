@@ -18,6 +18,6 @@ board.on("ready", function() {
 
   // Start the motor at maximum speed
   motor1.start(100);
-  motor3.start(-100);
+  motor3.reverse(100);
 
 });

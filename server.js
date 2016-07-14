@@ -96,6 +96,27 @@ board.on("ready", function() {
   		}, 1000 );
   	});
 
+    socket.on('forward', function(speed){
+      console.log('driving')
+      motor1.start(speed);
+      motor3.reverse(speed);
+    });
+
+    socket.on('reverse', function(speed){
+      console.log('driving')
+      motor1.reverse(speed);
+      motor3.forward(speed);
+    });
+
+    socket.on('stop', function(){
+      console.log('driving')
+      motor1.stop();
+      motor3.stop();
+    });
+
+
+
+
 	});
 
 

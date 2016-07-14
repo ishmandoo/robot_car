@@ -2,12 +2,11 @@ var XboxController = require('xbox-controller');
 var xbox = new XboxController;
 
 var io = require('socket.io-client'),
-socket = io.connect('192.168.0.55', {
-    port: 3000
-});
+socket = io.connect('http://192.168.0.55:3000');
 
 
-socket.on('connect', function () { console.log("socket connected"); });
+socket.on('connect', function () { 
+  console.log("socket connected"); });
 socket.emit('private message', { user: 'me', msg: 'whazzzup?' });
 
 xbox.on('a:press', function (key) {
@@ -20,11 +19,12 @@ xbox.on('b:release', function (key) {
 });
 
 xbox.on('lefttrigger', function(position){
+  socket.emit('reverse', position);
   console.log('lefttrigger', position);
 });
 
 xbox.on('righttrigger', function(position){
-
+  socket.emit('forward', position);
   console.log('righttrigger', position);
 });
 

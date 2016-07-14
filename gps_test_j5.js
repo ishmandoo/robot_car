@@ -1,5 +1,9 @@
 var five = require("johnny-five");
-var board = new five.Board();
+if (process.env.node_env == "production") {
+   var board = new five.Board({port: "/dev/ttyS0"});
+} else {
+   var board = new five.Board();
+}
 
 board.on("ready", function() {
 

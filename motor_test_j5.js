@@ -1,6 +1,12 @@
 
 var five = require("johnny-five"),
-    board = new five.Board({port: '/dev/ttyS0'});
+
+if (process.env.node_env == "production") {
+   var board = new five.Board({port: "/dev/ttyS0"});
+} else {
+   var board = new five.Board();
+}
+
 
 board.on("ready", function() {
   var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V1;

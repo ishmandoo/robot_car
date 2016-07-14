@@ -1,5 +1,5 @@
 
-var five = require("johnny-five"),
+var five = require("johnny-five");
 
 if (process.env.node_env == "production") {
    var board = new five.Board({port: "/dev/ttyS0"});
@@ -18,6 +18,6 @@ board.on("ready", function() {
 
   // Start the motor at maximum speed
   motor1.start(100);
-  motor3.start(100);
+  motor3.start(-100);
 
 });

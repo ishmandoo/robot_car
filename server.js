@@ -82,7 +82,9 @@ board.on("ready", function() {
   	socket.on('disconnect', function(){
     	console.log('user disconnected');
   	});
+
   	socket.on('drive', function(){
+  		console.log('driving')
 			motor1.start(100);
   		motor3.start(-100);
   		setTimeout( function () {

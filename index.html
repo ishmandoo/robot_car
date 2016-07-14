@@ -15,10 +15,17 @@
     console.log('message: ' + msg);
     $('#imu').html(JSON.stringify(msg))
   });
+
+  function drive() {
+  	socket.emit("drive");
+  }
+
 </script>
 </head>
 
 <body>
+
+<button onclick=drive>Drive</button>
 
 <div id="imu">
 </div>

@@ -5,12 +5,7 @@ var io = require('socket.io')(http);
 
 //app.use('/', express.static('client'));
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
+
 
 app.get('/', function(req, res){
   //res.send('<h1>Hello world</h1>');
@@ -68,12 +63,36 @@ board.on("ready", function() {
     console.log("--------------------------------------");
     if(io){
   		if(io.sockets){
-  			io.sockets.emit('imu_update', this.accelerometer);
+  			io.sockets.emit('imu_update', this.accelerometer.x);
   		}
   	}
 
 
   });
+
+  var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V1;
+
+  var motor1 = new five.Motor(configs.M1);
+  var motor2 = new five.Motor(configs.M2);
+  var motor3 = new five.Motor(configs.M3);
+  var motor4 = new five.Motor(configs.M4);
+
+  io.on('connection', function(socket){
+  	console.log('a user connected');
+  	socket.on('disconnect', function(){
+    	console.log('user disconnected');
+  	});
+  	socket.on('drive', function(){
+			motor1.start(100);
+  		motor3.start(-100);
+  		setTimeout( function () {
+				motor1.start(100);
+  			motor3.start(-100);
+  		}, 1000 );
+  	});
+
+	});
+
 
   
 

@@ -88,7 +88,7 @@ board.on("ready", function() {
 
   	socket.on('drive', function(){
   		console.log('driving')
-			motor1.start(255);
+			motor1.forward(255);
   		motor3.reverse(255);
   		setTimeout( function () {
 				motor1.stop();
@@ -98,14 +98,14 @@ board.on("ready", function() {
 
     socket.on('forward', function(speed){
       console.log('driving')
-      motor1.start(speed);
+      motor1.forward(speed);
       motor3.reverse(speed);
     });
 
     socket.on('reverse', function(speed){
       console.log('driving')
       motor1.reverse(speed);
-      motor3.start(speed);
+      motor3.forward(speed);
     });
 
     socket.on('stop', function(){

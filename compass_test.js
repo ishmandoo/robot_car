@@ -16,8 +16,8 @@ board.on("ready", function() {
   magnetometer.on("change",function(){
 
         console.log(this.raw);
-        console.log(this.scaled)
-  });
+        console.log(this.scaled);
+        console.log(this.heading);
  
 
 });

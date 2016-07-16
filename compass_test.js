@@ -18,7 +18,10 @@ board.on("ready", function() {
         console.log(this.raw);
         console.log(this.scaled);
         console.log(this.heading);
-        console.log(this);
+        console.log(this.x);
+        console.log(this.y);
+        console.log(this.z);
+
  
 
 });

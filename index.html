@@ -7,13 +7,18 @@
   var socket = io();
   
   socket.on('gps_update', function(msg){
-    console.log('message: ' + msg);
+    //console.log('message: ' + msg);
     $('#gps').html( JSON.stringify(msg))
   });
 
   socket.on('imu_update', function(msg){
-    console.log('message: ' + msg);
+    //console.log('message: ' + msg);
     $('#imu').html(JSON.stringify(msg))
+  });
+
+  socket.on('compass_update', function(msg){
+    console.log('compass message: ' + msg);
+    $('#compass').html(JSON.stringify(msg))
   });
 
   function drive() {
@@ -30,6 +35,8 @@
 <div id="imu">
 </div>
 <div id="gps">
+</div>
+<div id="compass">
 </div>
 Hi There
 </body>

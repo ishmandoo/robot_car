@@ -80,6 +80,21 @@ board.on("ready", function() {
   var motor4 = new five.Motor(configs.M4);
 
 
+
+
+  var magnetometer = new five.Magnetometer();
+
+  magnetometer.on("change",function(){
+
+      if(io){
+        if(io.sockets){
+          io.sockets.emit('compass_update', this.raw);
+        }
+      }
+  });
+
+
+
   io.on('connection', function(socket){
   	console.log('a user connected');
   	socket.on('disconnect', function(){

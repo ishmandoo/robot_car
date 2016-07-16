@@ -21,7 +21,8 @@ board.on("ready", function() {
         console.log(this.x);
         console.log(this.y);
         console.log(this.z);
-        console.log(magnetometer.raw)
+        console.log(magnetometer);
+
 
  
 

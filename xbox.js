@@ -2,7 +2,7 @@ var XboxController = require('xbox-controller');
 var xbox = new XboxController;
 
 var io = require('socket.io-client'),
-socket = io.connect('http://192.168.0.55:3000');
+socket = io.connect('http://192.168.0.65:3000');
 
 
 socket.on('connect', function () { 

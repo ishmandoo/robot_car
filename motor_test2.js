@@ -20,7 +20,7 @@ board.on("ready", function() {
     }
   });
 
-  motor.start(255);
+  motor.forward(255);
   setTimeout( function(){motor.stop()} ,1000)
 
 

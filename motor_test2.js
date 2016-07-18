@@ -19,7 +19,7 @@ board.on("ready", function() {
       cdir: 7  
     }
   });
-
+console.log(motor);
   motor.forward(255);
   //setTimeout( function(){motor.stop()} ,1000)
 

@@ -21,7 +21,7 @@ board.on("ready", function() {
   });
 
   motor.forward(255);
-  setTimeout( function(){motor.stop()} ,1000)
+  //setTimeout( function(){motor.stop()} ,1000)
 
 
 });

@@ -21,6 +21,12 @@ forward = new five.Pin({
   pin: 8
 });
 
+backward = new five.Pin({
+  pin: 7
+});
+
+backward.low()
+
 
   pwm.high()
   forward.high()

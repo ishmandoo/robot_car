@@ -1,7 +1,12 @@
 var numeric = require("numeric")
 
-
+/*
 var state = {x: 0, y: 0, theta: 0}
+var predicted_state = state;
+var covariance = nuermic.identity();
+var predicted_covariance = covariance;
+*/
+//var control = {speed: 0, direction: 0}
 var constants = {
   turning_radius: 1,
   top_speed: 1,
@@ -11,12 +16,18 @@ var constants = {
 
 var start_gps = {};
 
-
-
-function time() {
-  var date = new Date();
-  return date.getTime();
+function predict(state, control, covariance, dt) {
+  var predicted_state = predictState(state, control, dt);
+  var predicted_covariance = predictCovariance(covariance, state, control, dt);
+  return {state: predicted_state, covariance: predicted_covariance}
 }
+
+var update(predicted_state, predicted_covariance) {
+  var state = findStateEstimate(predicted_state);
+  var covariance = findCovarianceEstimate(predicted_covariance);
+  return {state: state, covariance: covariance}
+}
+
 
 function predictState(state, control, dt) {
   var new_state = {};
@@ -62,7 +73,8 @@ function findKalmanGain(covariance) {
   var S = HPH + constants.R;
 
   var PH = numeric.dot(covariance, H_transpose);
-  var K = numeric.dot(PH, numeric.inv(PH))
+  var K = numeric.dot(PH, numeric.inv(PH));
+  return K;
 }
 
 function findStateEstimate(state) {
@@ -76,8 +88,20 @@ function findStateEstimate(state) {
   new_state.theta = state.theta + Ky.theta;
 }
 
-findCovarianceEstimate(covariance) {
+function findCovarianceEstimate(covariance) {
+  var new_covariance = {};
+  var K = findKalmanGain();
+  var H = getH()
 
+  var KH = numeric.dot(K, H)
+
+  var P = numeric.dot(numeric.sub(numeric.identity(), KH), covariance)
+}
+
+
+function time() {
+  var date = new Date();
+  return date.getTime();
 }
 
 function getH() {

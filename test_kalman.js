@@ -1,39 +1,53 @@
 var kalman  = require('./kalman.js');
 var numeric = require('numeric')
 
-kalman.predictState()
-
-
 times = numeric.linspace(0,10,100);
 
-commands = 
+controls = times.map(function(time) {return {speed: 1, direction: 0}}); //creates null array of correct length and maps to replace every entry with a valid command
 
-observations = 
+measurements = times.map(function(time) {return {gps: {x: time * 1 + Math.random() * 0.1, y:0}, magnetometer: {theta: 0}}});
+
+var ys = [];
+
+var state = {x: 0, y: 0, theta: 0};
+var predicted_state = state;
+var covariance = numeric.identity(3);
+var predicted_covariance = covariance;
+
+for(var i = 1; i<times.length; i++){
+	var prediction = kalman.predict(state, controls[i], covariance, times[i] - times[i-1])
+	predicted_state = prediction.state;
+	predicted_covariance = prediction.covariance;
 
 
-for(var i = 0; i<len(times); i++){
-
-	kalman.
 
 
+	var update = kalman.update(predicted_state, predicted_covariance, measurements[i]);
+	state = update.state;
+	covariance = update.covariance;
 
+	ys.push(state.x);
 }
 
 
 var username = "philzook58"
 var api_key = "kxdfekn4ah"
 
-require('plotly')(username, api_key);
+var plotly = require('plotly')(username, api_key);
 
 var data = [
   {
-    x: ["2013-10-04 22:23:00", "2013-11-04 22:23:00", "2013-12-04 22:23:00"],
-    y: [1, 3, 6],
-    type: "scatter"
-  }
+    x: times,
+		y: ys,
+		type: 'scatter'
+  },
+	{
+		x: times,
+		y: measurements.map(function (measurement) { return measurement.gps.x}),
+		type: 'scatter'
+	},
 ];
 var graphOptions = {filename: "date-axes", fileopt: "overwrite"};
 plotly.plot(data, graphOptions, function (err, msg) {
     console.log(msg);
 });
-

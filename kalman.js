@@ -1,5 +1,7 @@
 var numeric = require("numeric")
 
+module.exports = {predict: predict, update: update};
+
 /*
 var state = {x: 0, y: 0, theta: 0}
 var predicted_state = state;
@@ -10,7 +12,7 @@ var predicted_covariance = covariance;
 var constants = {
   turning_radius: 1,
   top_speed: 1,
-  Q: [0.1*0.1,0,0],[0,0.1*0.1,0],[0,0,0.314*0.314]] // set diagonals to best guesses in uncertainty squared in x, y, theta after one second
+  Q: [[0.1*0.1,0,0],[0,0.1*0.1,0],[0,0,0.314*0.314]], // set diagonals to best guesses in uncertainty squared in x, y, theta after one second
   R: [[1,0,0],[0,1,0],[0,0,0.157*0.157]]
 }
 
@@ -22,8 +24,8 @@ function predict(state, control, covariance, dt) {
   return {state: predicted_state, covariance: predicted_covariance}
 }
 
-var update(predicted_state, predicted_covariance) {
-  var state = findStateEstimate(predicted_state);
+function update(predicted_state, predicted_covariance, measurement) {
+  var state = findStateEstimate(predicted_state, predicted_covariance, measurement);
   var covariance = findCovarianceEstimate(predicted_covariance);
   return {state: state, covariance: covariance}
 }
@@ -71,31 +73,34 @@ function findKalmanGain(covariance) {
   var HPH = numeric.dot(HP, H_transpose);
 
   var S = HPH + constants.R;
-
   var PH = numeric.dot(covariance, H_transpose);
+
   var K = numeric.dot(PH, numeric.inv(PH));
   return K;
 }
 
-function findStateEstimate(state) {
+function findStateEstimate(state, covariance, measurement) {
   var new_state = {};
-  var K = findKalmanGain();
-  var y = vectorifyObservation(findMeasurementResidual);
+  var K = findKalmanGain(covariance);
+  var y = vectorifyObservation(findMeasurementResidual(state, measurement));
   var Ky = statify(numeric.dot(K, y));
 
   new_state.x = state.x + Ky.x;
   new_state.y = state.y + Ky.y;
   new_state.theta = state.theta + Ky.theta;
+  return new_state;
 }
 
 function findCovarianceEstimate(covariance) {
   var new_covariance = {};
-  var K = findKalmanGain();
+  var K = findKalmanGain(covariance);
   var H = getH()
 
   var KH = numeric.dot(K, H)
 
-  var P = numeric.dot(numeric.sub(numeric.identity(), KH), covariance)
+  var P = numeric.dot(numeric.sub(numeric.identity(3), KH), covariance)
+
+  return P;
 }
 
 
@@ -116,8 +121,8 @@ function vectorify(state) {
   return [state.x, state.y, state.theta];
 }
 
-function vectorifyObservation(state) {
-  return [state.x, state.y, state.theta];
+function vectorifyObservation(observation) {
+  return [observation.x, observation.y, observation.theta];
 }
 
 function statify(vector) {
@@ -125,7 +130,7 @@ function statify(vector) {
 }
 
 function convertDir(direction_string) {
-  return switch (direction_string) {
+  switch(direction_string) {
     case "right":
       return -1;
       break;

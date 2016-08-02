@@ -22,7 +22,7 @@ var ys = [0];
 
 board.on("ready", function() {
   var starting_time = time();
-  var prev_time = starting_time();
+  var prev_time = starting_time;
 
   motor = new five.Motor({
     pins: {
@@ -64,7 +64,7 @@ board.on("ready", function() {
   setInterval(function () {drive(getControl(dt(starting_time)))}, 100);
 
   setInterval(function () {
-    var prediction = kalman.predict(state, getControl(dt(starting_time)), covariance, dt(previous_time))
+    var prediction = kalman.predict(state, getControl(dt(starting_time)), covariance, dt(prev_time))
     predicted_state = prediction.state;
     predicted_covariance = prediction.covariance;
 
@@ -109,7 +109,7 @@ function drive(control) {
 
 function getControl(time) {
   console.log(time);
-  if (time < 5000) {
+  if (time < 5) {
     return {speed: 1, direction: 0};
   } else {
     return {speed: 0, direction: 0}

@@ -117,6 +117,6 @@ function time() {
   return date.getTime();
 }
 
-var dt(t0){
+function dt(t0){
   return  time() - t0;
 }

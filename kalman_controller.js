@@ -2,13 +2,11 @@ var kalman  = require('./kalman.js');
 
 var five = require("johnny-five");
 if (process.env.node_env == "production") {
-   var board = new five.Board({port: "/dev/ttyS0"});
+   var board = new five.Board({port: "/dev/ttyAMA0"});
 } else {
    var board = new five.Board();
 
 }
-
-var starting_time = time();
 
 var starting_measurement = {};
 var latest_measurement = {gps: {delta_longitude: 0, delta_latitude: 0, x: 0, y:0}, magnetometer: {theta:0}};
@@ -23,6 +21,7 @@ var xs = [0];
 var ys = [0];
 
 board.on("ready", function() {
+  var starting_time = time();
 
   motor = new five.Motor({
     pins: {
@@ -61,10 +60,10 @@ board.on("ready", function() {
 
   });
 
-  setInterval(drive(getControl(time() - starting_time)), 100);
+  setInterval(function () {drive(getControl(time() - starting_time))}, 100);
 
   setInterval(function () {
-    var prediction = kalman.predict(state, controls[i], covariance, dt(starting_time))
+    var prediction = kalman.predict(state, getControl(time() - starting_time), covariance, dt(starting_time))
     predicted_state = prediction.state;
     predicted_covariance = prediction.covariance;
 
@@ -100,12 +99,14 @@ board.on("ready", function() {
 });
 
 function drive(control) {
+  console.log(control.speed);
   motor.forward(Math.floor(control.speed * 255));
 }
 
 
 function getControl(time) {
-  if (time < 5) {
+  console.log(time);
+  if (time < 5000) {
     return {speed: 1, direction: 0};
   } else {
     return {speed: 0, direction: 0}
@@ -118,5 +119,5 @@ function time() {
 }
 
 function dt(t0){
-  return  time() - t0;
+  return  (time() - t0) / 1000;
 }

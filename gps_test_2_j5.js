@@ -15,7 +15,8 @@ board.on("ready", function() {
     pins: {
       rx: 11,
       tx: 10,
-    }
+    },
+    baud: 4800
   });
 
   // If latitude, longitude change log it
@@ -24,15 +25,6 @@ board.on("ready", function() {
     console.log("  latitude   : ", this.latitude);
     console.log("  longitude  : ", this.longitude);
     console.log("  altitude   : ", this.altitude);
-    console.log("--------------------------------------");
-  });
-
-  gps.on("data", function() {
-    console.log("position");
-    console.log("  latitude   : ", this.latitude);
-    console.log("  longitude  : ", this.longitude);
-    console.log("  altitude   : ", this.altitude);
-    console.log("  sat   : ", this.sat);
     console.log("--------------------------------------");
   });
   // If speed, course change log it

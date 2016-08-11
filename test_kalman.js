@@ -3,9 +3,21 @@ var numeric = require('numeric')
 
 times = numeric.linspace(0,10,100);
 
-controls = times.map(function(time) {return {speed: 1, direction: 0}}); //creates null array of correct length and maps to replace every entry with a valid command
+controls = times.map(function(time) {
+	if (time < 5) {
+		return {speed: 1, direction: 0}
+	} else {
+		return {speed: 0, direction: 0}
+	}
+}); //creates null array of correct length and maps to replace every entry with a valid command
 
-measurements = times.map(function(time) {return {gps: {x: time * 1 + Math.random() * 0.1, y:0}, magnetometer: {theta: 0}}});
+measurements = times.map(function(time) {
+	if (time < 5) {
+		return {gps: {x: time * 1 + (Math.random()-0.5) * 10, y:0}, magnetometer: {theta: 0}}
+	} else {
+		return {gps: {x: 5 * 1 + (Math.random()-0.5) * 10, y:0}, magnetometer: {theta: 0}}
+	}
+});
 
 var ys = [];
 
@@ -13,6 +25,7 @@ var state = {x: 0, y: 0, theta: 0};
 var predicted_state = state;
 var covariance = numeric.identity(3);
 var predicted_covariance = covariance;
+ys.push(state.x)
 
 for(var i = 1; i<times.length; i++){
 	var prediction = kalman.predict(state, controls[i], covariance, times[i] - times[i-1])
@@ -26,7 +39,7 @@ for(var i = 1; i<times.length; i++){
 	state = update.state;
 	covariance = update.covariance;
 
-	ys.push(state.x);
+	ys.push(predicted_state.x);
 }
 
 
@@ -47,6 +60,8 @@ var data = [
 		type: 'scatter'
 	},
 ];
+
+console.log(data);
 var graphOptions = {filename: "date-axes", fileopt: "overwrite"};
 plotly.plot(data, graphOptions, function (err, msg) {
     console.log(msg);

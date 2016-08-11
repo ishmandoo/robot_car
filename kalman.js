@@ -12,8 +12,8 @@ var predicted_covariance = covariance;
 var constants = {
   turning_radius: 1,
   top_speed: 1,
-  Q: [[0.1*0.1,0,0],[0,0.1*0.1,0],[0,0,0.314*0.314]], // set diagonals to best guesses in uncertainty squared in x, y, theta after one second
-  R: [[1,0,0],[0,1,0],[0,0,0.157*0.157]]
+  Q: [[1*1,0,0],[0,1*1,0],[0,0,3.14*3.14]], // set diagonals to best guesses in uncertainty squared in x, y, theta after one second
+  R: [[10*10,0,0],[0,10*10,0],[0,0,0.157*0.157]]
 }
 
 var start_gps = {};
@@ -72,10 +72,10 @@ function findKalmanGain(covariance) {
   var HP = numeric.dot(H, covariance);
   var HPH = numeric.dot(HP, H_transpose);
 
-  var S = HPH + constants.R;
+  var S = numeric.add(HPH, constants.R);
   var PH = numeric.dot(covariance, H_transpose);
 
-  var K = numeric.dot(PH, numeric.inv(PH));
+  var K = numeric.dot(PH, numeric.inv(S));
   return K;
 }
 

@@ -26,7 +26,7 @@ board.on("ready", function() {
     console.log("  altitude   : ", this.altitude);
     console.log("--------------------------------------");
   });
-
+/*
   gps.on("data", function() {
     console.log("position");
     console.log("  latitude   : ", this.latitude);
@@ -34,7 +34,7 @@ board.on("ready", function() {
     console.log("  altitude   : ", this.altitude);
     console.log("  sat   : ", this.sat);
     console.log("--------------------------------------");
-  });
+  });*/
   // If speed, course change log it
   gps.on("navigation", function() {
     console.log("navigation");

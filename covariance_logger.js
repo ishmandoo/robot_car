@@ -3,7 +3,7 @@ var fs = require('fs');
 
 
 if (process.env.node_env == "production") {
-   var board = new five.Board({port: "/dev/ttyS0"});
+   var board = new five.Board({port: "/dev/ttyAMA0"});
 } else {
    var board = new five.Board();
 }
@@ -19,14 +19,23 @@ board.on("ready", function() {
    */
   var gps = new five.GPS({
     pins: {
-      rx: 2,
-      tx: 13,
+      rx: 11,
+      tx: 10,
     }
   });
 
   // If latitude, longitude change log it
   gps.on("change", function() {
+console.log(this.latitude);
     gps_log.push({lat: this.latitude, lon: this.longitude})
+  });
+
+  gps.on("unknown", function() {
+    console.log("unknown gps message");
+  });
+
+  gps.on("acknowledge", function() {
+    console.log("ack gps message");
   });
 
   var magnetometer = new five.Magnetometer();
@@ -37,11 +46,27 @@ board.on("ready", function() {
 
 
   setTimeout(function () {
-    fs.writeFile("covarance.json", {gps: gps_log, magnetometer: magnetometer_log}, function (err) {
-      if (err) return console.log(err);
-      console.log('Hello World > helloworld.txt');
-    });
-  }, 60000);
+    avg = magnetometer_log.reduce(function(sum, heading) {
+	return sum + (heading.angle)
+    },0) / magnetometer_log.length;
+
+    variance = magnetometer_log.reduce(function(sum, heading) {
+	return sum + ((heading.angle - avg) * (heading.angle - avg))
+    },0) / magnetometer_log.length;
+    
+    loc_sum = gps_log.reduce(function(sum, loc) {
+	console.log(loc);
+	return {lat: sum.lat + loc.lat, lon: sum.lon + loc.lon};
+    },0);
+
+    avg_sum = {lat: loc_sum.lat / gps_log.length, lon: loc_sum.lon / gps_log.length}
+
+    console.log(avg_sum);
+    //fs.writeFile("covarance.json", {gps: gps_log, magnetometer: magnetometer_log}, function (err) {
+    //  if (err) return console.log(err);
+    //  console.log('Hello World > helloworld.txt');
+    //});
+  }, 5000);
 
 
 

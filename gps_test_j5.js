@@ -1,6 +1,6 @@
 var five = require("johnny-five");
 if (process.env.node_env == "production") {
-   var board = new five.Board({port: "/dev/ttyS0"});
+   var board = new five.Board({port: "/dev/ttyAMA0"});
 } else {
    var board = new five.Board();
 }
@@ -15,7 +15,8 @@ board.on("ready", function() {
     pins: {
       rx: 2,
       tx: 13,
-    }
+    },
+    baud: 4800
   });
 
   // If latitude, longitude change log it

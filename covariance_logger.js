@@ -30,6 +30,7 @@ console.log(this.latitude);
     gps_log.push({lat: this.latitude, lon: this.longitude})
   });
 
+
   gps.on("unknown", function() {
     console.log("unknown gps message");
   });
@@ -38,14 +39,18 @@ console.log(this.latitude);
     console.log("ack gps message");
   });
 
+
+/*
+
   var magnetometer = new five.Magnetometer();
 
   magnetometer.on("change",function(){
     magnetometer_log.push({angle: this.heading})
   });
-
+*/
 
   setTimeout(function () {
+
     avg = magnetometer_log.reduce(function(sum, heading) {
 	return sum + (heading.angle)
     },0) / magnetometer_log.length;
@@ -67,6 +72,26 @@ console.log(this.latitude);
     //  console.log('Hello World > helloworld.txt');
     //});
   }, 5000);
+
+    var lat_list = gps_log.map(function (entry) { return entry.lat });
+    var lon_list = gps_log.map(function (entry) { return entry.lon });
+    var heading_list = gps_log.map(function (entry) { return entry.heading });
+    console.log(variance(lat_list));
+    console.log(variance(lon_list));
+    console.log(variance(heading_list));
+  }, 5000);
+
+
+  function mean(list) {
+    return list.reduce(function (sum, entry) {return sum + entry}, 0) / list.length;
+  }
+
+  function variance(list) {
+    var list_mean = mean(list);
+    var residual_squared_list = list.map(function (entry) {return (entry - list_mean) * (entry - list_mean)});
+    var sum_residual_squared = residual_squared_list.reduce(function (entry, sum) {return entry + sum}, 0)
+    return Math.sqrt(sum_residual_squared / list.length);
+  }
 
 
 

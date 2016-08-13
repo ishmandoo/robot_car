@@ -1,6 +1,6 @@
 var five = require("johnny-five");
 if (process.env.node_env == "production") {
-   var board = new five.Board({port: "/dev/ttyAMA0"});
+   var board = new five.Board({port: "/dev/ttyS0"});
 } else {
    var board = new five.Board();
 }
@@ -15,8 +15,9 @@ board.on("ready", function() {
     pins: {
       rx: 11,
       tx: 10,
-    }
- });
+    },
+    baud: 4800
+  });
 
   // If latitude, longitude change log it
   gps.on("change", function() {
@@ -26,15 +27,6 @@ board.on("ready", function() {
     console.log("  altitude   : ", this.altitude);
     console.log("--------------------------------------");
   });
-/*
-  gps.on("data", function() {
-    console.log("position");
-    console.log("  latitude   : ", this.latitude);
-    console.log("  longitude  : ", this.longitude);
-    console.log("  altitude   : ", this.altitude);
-    console.log("  sat   : ", this.sat);
-    console.log("--------------------------------------");
-  });*/
   // If speed, course change log it
   gps.on("navigation", function() {
     console.log("navigation");
